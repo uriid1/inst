@@ -1,0 +1,78 @@
+#!/bin/bash
+
+#//******************************//#
+#//# Author: by uriid1			#//#
+#//# license: GNU GPL			#//#
+#//# vk: vk.com/uriid1			#//#
+#//# Mail: appdurov@gmail.com	#//#
+#//# Version 1.0 September 2020	#//#
+####****************************####
+
+
+# Удаляем пробелы в именах
+list_format=(jpg png JPG PNG jpeg)
+for i in ${list_format[@]}
+do
+	find ./ -maxdepth 1 -type f -name "* *.$i" -exec bash -c 'mv "$0" "${0// /_}"' {} \;
+done
+
+# Функция конвертирования изображения
+convert_image() {
+	
+	# Получаем ширину и высоту изображений
+	read pw ph < <(convert "$FILE" -format "%w %h" info:)
+	
+	# соотношение сторон
+	ratio=$(bc -l <<< "$pw/$ph")
+	
+	if [ $pw -gt $ph ];
+	then
+		# новая высота относительно новой ширины
+		new_width=$((1080-$border))
+		new_height=$(bc -l <<< "$new_width/$ratio")
+	else
+		# новая ширина относительно новой высоты
+		new_height=$((1080-$border))
+		new_width=$(bc -l <<< "$new_height*$ratio")
+	fi
+	
+	# Расположение по центру
+	PX=$(bc -l <<< "(1080-$new_width)/2")
+	PY=$(bc -l <<< "(1080-$new_height)/2")
+	
+	# Рисуем картинку
+	NAME="$DIRSTACK/inst_${FILE##*/}"
+	convert -size 1080x1080 xc:white \
+	  -draw "image over  $PX,$PY $new_width,$new_height '$FILE'" \
+	  $NAME
+	  echo "Обработан ${NAME##*/} "
+}
+
+# Проверка для первого аргумента
+case $1 in
+	all)
+		#######ОБРАБОТКА ВСЕХ ИЗОБРАЖЕНИЙ######
+		# Рамка
+		border=$2
+		echo "Рамка: "$border"px"
+		
+		# Для всех
+		for FILE in $(find -maxdepth 1 -type f -regextype posix-extended -iregex ".*\.(jpg|png|JPG|PNG|jpeg)$")
+		do
+			convert_image
+		done
+		;;
+	one)
+		######ОБРАБОТКА ОДНОГО ИЗОБРАЖЕНИЯ######
+		# Рамка
+		border=$3
+		echo "Рамка: "$border"px"
+		
+		FILE=$2
+		convert_image
+		;;
+	*)
+		echo
+		echo "Параметры заданы не верно!"
+		exit 0
+esac

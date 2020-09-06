@@ -1,0 +1,5 @@
+#!/bin/bash
+
+chmod +x inst
+sudo cp $1 /usr/bin
+echo "Успешно установлен $1"
