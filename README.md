@@ -4,8 +4,9 @@
 # Установка
 1) git clone https://github.com/uriid1/inst/
 2) cd inst
-3) sudo ./install
-4) Готово!
+3) chmod +x install
+4) sudo ./install
+5) Готово!
 
 # Использоание для конкретного файла изображения
 inst one filename.jpg 40
