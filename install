@@ -1,5 +1,16 @@
 #!/bin/bash
 
-chmod +x inst
-sudo cp $1 /usr/bin
-echo "Успешно установлен $1"
+# Programm name
+pname='inst'
+
+# Install
+chmod +x $pname
+sudo cp inst /usr/bin
+
+# Check
+if [ -e /usr/bin/$pname ]
+then
+	echo "$pname installed successfully!"
+else
+	echo -e "You may have entered the wrong password. \n Either $pname is already installed."
+fi
