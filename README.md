@@ -19,8 +19,8 @@ Keys:\
 -w or --width  Sets the width\
 -h or --height  Sets the height
 
-This example will create an inst_file_name.png image\
-by writing the input image in a white square of 1080x1080px.
+This example will create an inst_file_name.png image
+by writing the input image in a white square of 1080x1080px\
 $ inst -o file_name.png 40
 
 Fitting all images from the directory to a square of 1080x1080\
