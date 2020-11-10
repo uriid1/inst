@@ -1,5 +1,7 @@
 # inst
-Script that adds photos to a white square of 1080x1080 with the same aspect ratio.\ You can set the size of the square (frame).
+Script that adds photos to a white square of 1080x1080 with the same aspect ratio.\ You can set the size of the square (frame).\
+You will need imagemagick to work\
+Termux support is available!
 
 ![Screenshot](https://cs03.spac.me/f/087069048125087123181077169255042197255015203119156239075033085175/1605032965/83313815/0/1c23f2872be04f20f97a158685030346/inst-spaces.im.png)
 
