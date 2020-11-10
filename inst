@@ -3,11 +3,37 @@
 #//******************************//#
 #//# Author: by uriid1		#//#
 #//# license: GNU GPL		#//#
-#//# vk: vk.com/uriid1		#//#
+#//# telegram: uriid1		#//#
 #//# Mail: appdurov@gmail.com	#//#
-#//# Version 1.0 September 2020	#//#
 ####****************************####
 
+# Константы
+version="1.0.2"
+c_yellow='\033[1;33m'
+c_green='\033[1;32m'
+c_def='\033[0m'
+
+# Изменяемые переменные
+u_w=1080
+u_h=1080
+
+# Пользовательская  Ширина/Высота
+case $4 in
+	-w | --width)
+		u_w=$5
+		echo $u_w
+esac
+
+case $6 in
+	-h | --height)
+		u_h=$7
+		echo $u_h
+esac
+
+
+#
+clear
+echo -e "${c_green} Inst by uriid1 ${c_def} | ${c_yellow} version: $version ${c_def} \n"
 
 # Удаляем пробелы в именах
 list_format=(jpg png JPG PNG jpeg)
@@ -27,34 +53,34 @@ convert_image() {
 	
 	if [ $pw -gt $ph ];
 	then
-		# новая высота относительно новой ширины
-		new_width=$((1080-$border))
+		# Новая высота относительно новой ширины
+		new_width=$((u_w - border))
 		new_height=$(bc -l <<< "$new_width/$ratio")
 	else
-		# новая ширина относительно новой высоты
-		new_height=$((1080-$border))
+		# Новая ширина относительно новой высоты
+		new_height=$((u_h - border))
 		new_width=$(bc -l <<< "$new_height*$ratio")
 	fi
 	
 	# Расположение по центру
-	PX=$(bc -l <<< "(1080-$new_width)/2")
-	PY=$(bc -l <<< "(1080-$new_height)/2")
+	PX=$(bc -l <<< "($u_w-$new_width)/2")
+	PY=$(bc -l <<< "($u_h-$new_height)/2")
 	
 	# Рисуем картинку
 	NAME="$DIRSTACK/inst_${FILE##*/}"
-	convert -size 1080x1080 xc:white \
+	convert -size $u_w"x"$u_h xc:white \
 	  -draw "image over  $PX,$PY $new_width,$new_height '$FILE'" \
 	  $NAME
-	  echo "Обработан ${NAME##*/} "
+	  echo "finished: ${NAME##*/} "
 }
 
 # Проверка для первого аргумента
 case $1 in
-	all)
-		#######ОБРАБОТКА ВСЕХ ИЗОБРАЖЕНИЙ######
+	-a | --all)
+		# Обработка всех изображений
 		# Рамка
 		border=$2
-		echo "Рамка: "$border"px"
+		echo -e " Framing: "$border"px \n Width: $u_w""px"" \n Height: $u_h""px"" \n"
 		
 		# Для всех
 		for FILE in $(find -maxdepth 1 -type f -regextype posix-extended -iregex ".*\.(jpg|png|JPG|PNG|jpeg)$")
@@ -62,17 +88,18 @@ case $1 in
 			convert_image
 		done
 		;;
-	one)
-		######ОБРАБОТКА ОДНОГО ИЗОБРАЖЕНИЯ######
+	-o | --one)
+		# Обработка одного изображения
+		FILE=$2
+		
 		# Рамка
 		border=$3
-		echo "Рамка: "$border"px"
+		echo -e " Framing: "$border"px \n Width: $u_w""px"" \n Height: $u_h""px"" \n"
 		
-		FILE=$2
 		convert_image
 		;;
 	*)
 		echo
-		echo "Параметры заданы не верно!"
+		echo "The parameters are set incorrectly!"
 		exit 0
 esac
