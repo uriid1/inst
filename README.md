@@ -10,7 +10,7 @@ Termux support is available!
 2) cd inst
 3) chmod +x install
 4) sudo ./install
-5) Готово!
+5) Done! Delele inst folder.
 
 # Using
 Keys:\
