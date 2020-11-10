@@ -13,7 +13,7 @@ Termux support is available!
 5) Готово!
 
 # Using
-Keys:
+Keys:\
 -a or --all  To process all files in the directory\
 -o or --one  To process one specific file\
 -w or --width  Sets the width\
